@@ -12,15 +12,15 @@ struct COM{
 
 	unsigned char head1; // 0xAA   									1 byte
 	unsigned char head2; // 0x55
-	float GPS_velocity; // gps·µ»ØµÄ³µÁ¾µ±Ç°ÕæÊµËÙ¶È£¬ÓÃÒÔÏÔÊ¾			4 byte
-	float AIM_velocity; // Í¨¹ý¼ÆËãµÃ³öµÄËÙ¶ÈÄ¿±êÖµ					4 byte
-	short int CarModel; // 0£ºÎÞÈË×´Ì¬ 1£ºÓÐÈË×´Ì¬ ÏÔÊ¾				2 byte
-	short int BodyModel; // 0ÎªÖ±ÏßÈü 1Îª8×ÖÈÆ»· 2Îª¸ßËÙÑ­¼£ ÏÔÊ¾		2 byte
-	unsigned int Serial; 		// ÏûÏ¢ÁÐ							4 byte
-	short int SystemState; // ÉÏÎ»»ú×´Ì¬£¬ ÓÃÓÚÃùµÑ					2 byte
-	short int BrakeSingal; // É²³µµÆÐÅºÅ£¬ ÓÃÓÚÏÔÊ¾					2 byte
-	unsigned char end1;  // »Ø³µ										²»ÓÃ¹Ü
-	unsigned char end2;  // »»ÐÐ
+	float GPS_velocity; // gpsè¿”å›žçš„è½¦è¾†å½“å‰çœŸå®žé€Ÿåº¦ï¼Œç”¨ä»¥æ˜¾ç¤º			4 byte
+	float AIM_velocity; // é€šè¿‡è®¡ç®—å¾—å‡ºçš„é€Ÿåº¦ç›®æ ‡å€¼					4 byte
+	short int CarModel; // 0ï¼šæ— äººçŠ¶æ€ 1ï¼šæœ‰äººçŠ¶æ€ æ˜¾ç¤º				2 byte
+	short int BodyModel; // 0ä¸ºç›´çº¿èµ› 1ä¸º8å­—ç»•çŽ¯ 2ä¸ºé«˜é€Ÿå¾ªè¿¹ æ˜¾ç¤º		2 byte
+	unsigned int Serial; 		// æ¶ˆæ¯åˆ—							4 byte
+	short int SystemState; // ä¸Šä½æœºçŠ¶æ€ï¼Œ ç”¨äºŽé¸£ç¬›					2 byte
+	short int BrakeSingal; // åˆ¹è½¦ç¯ä¿¡å·ï¼Œ ç”¨äºŽæ˜¾ç¤º					2 byte
+	unsigned char end1;  // å›žè½¦										ä¸ç”¨ç®¡
+	unsigned char end2;  // æ¢è¡Œ
 
 };
 
@@ -28,33 +28,33 @@ struct COM{
 
  int main(void)
  {
- 	// ±ØÐëÔÚÇ°Ãæ¶¨Òå
+ 	// å¿…é¡»åœ¨å‰é¢å®šä¹‰
 		u8 key;
 	u8 i=0,t=0;
 	u8 cnt=0;
-	u8 canbuf[8];  // u8ÊÇ°´ÕÕ×Ö½Ú¶ÁÈëµÄ  canbufÊÇ¸öÊý×é
+	u8 canbuf[8];  // u8æ˜¯æŒ‰ç…§å­—èŠ‚è¯»å…¥çš„  canbufæ˜¯ä¸ªæ•°ç»„
 	u8 res;
-	u8 mode=CAN_Mode_LoopBack;//CAN¹¤×÷Ä£Ê½;CAN_Mode_Normal(0)£ºÆÕÍ¨Ä£Ê½£¬CAN_Mode_LoopBack(1)£º»·»ØÄ£Ê½
-	Massage msg; // COM¿Ú´«ÈëµÄ½á¹¹ÌåÖ¸Õë
+	u8 mode=CAN_Mode_LoopBack;//CANå·¥ä½œæ¨¡å¼;CAN_Mode_Normal(0)ï¼šæ™®é€šæ¨¡å¼ï¼ŒCAN_Mode_LoopBack(1)ï¼šçŽ¯å›žæ¨¡å¼
+	Massage msg; // COMå£ä¼ å…¥çš„ç»“æž„ä½“æŒ‡é’ˆ
 
 
-	delay_init();	    	//ÑÓÊ±º¯Êý³õÊ¼»¯
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//ÉèÖÃÖÐ¶ÏÓÅÏÈ¼¶·Ö×éÎª×é2£º2Î»ÇÀÕ¼ÓÅÏÈ¼¶£¬2Î»ÏìÓ¦ÓÅÏÈ¼¶
-	uart_init(115200);	 	//´®¿Ú³õÊ¼»¯Îª115200
-	LED_Init();		  		//³õÊ¼»¯ÓëLEDÁ¬½ÓµÄÓ²¼þ½Ó¿Ú
-	LCD_Init();			   	//³õÊ¼»¯LCD	
-	KEY_Init();				//°´¼ü³õÊ¼»¯		 	
+	delay_init();	    	//å»¶æ—¶å‡½æ•°åˆå§‹åŒ–
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//è®¾ç½®ä¸­æ–­ä¼˜å…ˆçº§åˆ†ç»„ä¸ºç»„2ï¼š2ä½æŠ¢å ä¼˜å…ˆçº§ï¼Œ2ä½å“åº”ä¼˜å…ˆçº§
+	uart_init(115200);	 	//ä¸²å£åˆå§‹åŒ–ä¸º115200
+	LED_Init();		  		//åˆå§‹åŒ–ä¸ŽLEDè¿žæŽ¥çš„ç¡¬ä»¶æŽ¥å£
+	LCD_Init();			   	//åˆå§‹åŒ–LCD	
+	KEY_Init();				//æŒ‰é”®åˆå§‹åŒ–		 	
 
 
-	CAN_Mode_Init(CAN_SJW_1tq,CAN_BS2_8tq,CAN_BS1_9tq,4,CAN_Mode_LoopBack);//CAN³õÊ¼»¯»·»ØÄ£Ê½,²¨ÌØÂÊ500Kbps    
+	CAN_Mode_Init(CAN_SJW_1tq,CAN_BS2_8tq,CAN_BS1_9tq,4,CAN_Mode_LoopBack);//CANåˆå§‹åŒ–çŽ¯å›žæ¨¡å¼,æ³¢ç‰¹çŽ‡500Kbps    
 
- 	POINT_COLOR=RED;//ÉèÖÃ×ÖÌåÎªºìÉ«
+ 	POINT_COLOR=RED;//è®¾ç½®å­—ä½“ä¸ºçº¢è‰²
 	LCD_ShowString(60,130,200,16,16,"LoopBack Mode");
-	LCD_ShowString(60,150,200,16,16,"KEY0:Send WK_UP:Mode");//ÏÔÊ¾ÌáÊ¾ÐÅÏ¢		
-	POINT_COLOR=BLUE;//ÉèÖÃ×ÖÌåÎªÀ¶É«	  
-	LCD_ShowString(60,170,200,16,16,"Count:");			//ÏÔÊ¾µ±Ç°¼ÆÊýÖµ	
-	LCD_ShowString(60,190,200,16,16,"Send Data:");		//ÌáÊ¾·¢ËÍµÄÊý¾Ý	
-	LCD_ShowString(60,250,200,16,16,"Receive Data:");	//ÌáÊ¾½ÓÊÕµ½µÄÊý¾Ý		
+	LCD_ShowString(60,150,200,16,16,"KEY0:Send WK_UP:Mode");//æ˜¾ç¤ºæç¤ºä¿¡æ¯		
+	POINT_COLOR=BLUE;//è®¾ç½®å­—ä½“ä¸ºè“è‰²	  
+	LCD_ShowString(60,170,200,16,16,"Count:");			//æ˜¾ç¤ºå½“å‰è®¡æ•°å€¼	
+	LCD_ShowString(60,190,200,16,16,"Send Data:");		//æç¤ºå‘é€çš„æ•°æ®	
+	LCD_ShowString(60,250,200,16,16,"Receive Data:");	//æç¤ºæŽ¥æ”¶åˆ°çš„æ•°æ®		
 
 
 	while(1)
@@ -63,10 +63,10 @@ struct COM{
 
 		if((USART_RX_STA&0x8000) && key==KEY0_PRES)
 		{
-			len=USART_RX_STA&0x3fff;   //µÃµ½´Ë´Î½ÓÊÕµ½µÄÊý¾Ý³¤¶È
-			printf("\r\nÄú·¢ËÍµÄÏûÏ¢Îª:%d\r\n\r\n",len);  //  ²é¿´ËùÎ½Êý¾Ý³¤¶ÈÊÇÖ¸×Ö½ÚÊýÂð£¿
+			len=USART_RX_STA&0x3fff;   //å¾—åˆ°æ­¤æ¬¡æŽ¥æ”¶åˆ°çš„æ•°æ®é•¿åº¦
+			printf("\r\næ‚¨å‘é€çš„æ¶ˆæ¯ä¸º:%d\r\n\r\n",len);  //  æ•°ç»„çš„é•¿åº¦
 
-			// ×Ü¹²22¸ö ´æ·ÅÔÚmsg½á¹¹ÌåÖÐ
+			// æ€»å…±22ä¸ª å­˜æ”¾åœ¨msgç»“æž„ä½“ä¸­
 			if(len == 22){
 				msg->head1 = USART_RX_BUF[0];
 				msg->head2 = USART_RX_BUF[1];
@@ -81,60 +81,60 @@ struct COM{
 
 			for(i=0;i<8;i++)
 			{
-				if(i<4)LCD_ShowxNum(60+i*32,210,USART_RX_BUF[i],3,16,0X80);	//ÏÔÊ¾Êý¾Ý
-				else LCD_ShowxNum(60+(i-4)*32,230,USART_RX_BUF[i],3,16,0X80);	//ÏÔÊ¾Êý¾Ý
+				if(i<4)LCD_ShowxNum(60+i*32,210,USART_RX_BUF[i],3,16,0X80);	//æ˜¾ç¤ºæ•°æ®
+				else LCD_ShowxNum(60+(i-4)*32,230,USART_RX_BUF[i],3,16,0X80);	//æ˜¾ç¤ºæ•°æ®
 			}
 
-			printf("\r\n\r\n");//²åÈë»»ÐÐ
+			printf("\r\n\r\n");//æ’å…¥æ¢è¡Œ
 			USART_RX_STA=0;
 
 			/**
-			 * ½«usartbufÖÐµÄÊý¾Ý·¢ËÍ¸øcan¶Ë
+			 * å°†usartbufä¸­çš„æ•°æ®å‘é€ç»™canç«¯
 			 */
 			res = Can_Send_Msg(USART_RX_BUF,8);
 
 
-			if(res)LCD_ShowString(60+80,190,200,16,16,"Failed");		//ÌáÊ¾·¢ËÍÊ§°Ü
+			if(res)LCD_ShowString(60+80,190,200,16,16,"Failed");		//æç¤ºå‘é€å¤±è´¥
 			else LCD_ShowString(60+80,190,200,16,16,"OK    ");
 		}
 
 
 		/**
-		 * Õâ¿éÉÏ¼ü¿ØÖÆÄ£Ê½±ä»»
+		 * è¿™å—ä¸Šé”®æŽ§åˆ¶æ¨¡å¼å˜æ¢
 		 */
-		else if(key==WKUP_PRES)//WK_UP°´ÏÂ£¬¸Ä±äCANµÄ¹¤×÷Ä£Ê½
+		else if(key==WKUP_PRES)//WK_UPæŒ‰ä¸‹ï¼Œæ”¹å˜CANçš„å·¥ä½œæ¨¡å¼
 		{
 			mode=!mode;
-  			CAN_Mode_Init(CAN_SJW_1tq,CAN_BS2_8tq,CAN_BS1_9tq,4,mode);//CANÆÕÍ¨Ä£Ê½³õÊ¼»¯, ²¨ÌØÂÊ500Kbps
-			POINT_COLOR=RED;//ÉèÖÃ×ÖÌåÎªºìÉ« 
-			if(mode==0)//ÆÕÍ¨Ä£Ê½£¬ÐèÒª2¸ö¿ª·¢°å
+  			CAN_Mode_Init(CAN_SJW_1tq,CAN_BS2_8tq,CAN_BS1_9tq,4,mode);//CANæ™®é€šæ¨¡å¼åˆå§‹åŒ–, æ³¢ç‰¹çŽ‡500Kbps
+			POINT_COLOR=RED;//è®¾ç½®å­—ä½“ä¸ºçº¢è‰² 
+			if(mode==0)//æ™®é€šæ¨¡å¼ï¼Œéœ€è¦2ä¸ªå¼€å‘æ¿
 			{
 				LCD_ShowString(60,130,200,16,16,"Nnormal Mode ");
-			}else //»Ø»·Ä£Ê½,Ò»¸ö¿ª·¢°å¾Í¿ÉÒÔ²âÊÔÁË.
+			}else //å›žçŽ¯æ¨¡å¼,ä¸€ä¸ªå¼€å‘æ¿å°±å¯ä»¥æµ‹è¯•äº†.
 			{
  				LCD_ShowString(60,130,200,16,16,"LoopBack Mode");
 			}
- 			POINT_COLOR=BLUE;//ÉèÖÃ×ÖÌåÎªÀ¶É«
+ 			POINT_COLOR=BLUE;//è®¾ç½®å­—ä½“ä¸ºè“è‰²
 		}
 
 
 
-		key=Can_Receive_Msg(canbuf);  // Õâ¸ö²Ù×÷Ê¹µÃÊý¾Ý´æ·ÅÔÚcanbufÖÐ£¬²¢·µ»ØÊÇ·ñ½ÓÊÜ³É¹¦±êÖ¾key
+		key=Can_Receive_Msg(canbuf);  // è¿™ä¸ªæ“ä½œä½¿å¾—æ•°æ®å­˜æ”¾åœ¨canbufä¸­ï¼Œå¹¶è¿”å›žæ˜¯å¦æŽ¥å—æˆåŠŸæ ‡å¿—key
 
 		/**
-		 * Ïñ´®¿Ú·¢ËÍcanbufÖÐµÄÊý¾Ý
+		 * åƒä¸²å£å‘é€canbufä¸­çš„æ•°æ®
 		 */
 
 
 
-        if(key)//½ÓÊÕµ½ÓÐÊý¾Ý
+        if(key)//æŽ¥æ”¶åˆ°æœ‰æ•°æ®
 		{
-			LCD_Fill(60,270,130,310,WHITE);//Çå³ýÖ®Ç°µÄÏÔÊ¾
+			LCD_Fill(60,270,130,310,WHITE);//æ¸…é™¤ä¹‹å‰çš„æ˜¾ç¤º
  			for(i=0;i<key;i++)
 			{
-				if(i<4)LCD_ShowxNum(60+i*32,270,canbuf[i],3,16,0X80);	//ÏÔÊ¾Êý¾Ý
-				else LCD_ShowxNum(60+(i-4)*32,290,canbuf[i],3,16,0X80);	//ÏÔÊ¾Êý¾Ý
-				USART_SendData(USART1, canbuf[i]);//Ïò´®¿Ú1·¢ËÍÊý¾Ý
+				if(i<4)LCD_ShowxNum(60+i*32,270,canbuf[i],3,16,0X80);	//æ˜¾ç¤ºæ•°æ®
+				else LCD_ShowxNum(60+(i-4)*32,290,canbuf[i],3,16,0X80);	//æ˜¾ç¤ºæ•°æ®
+				USART_SendData(USART1, canbuf[i]);//å‘ä¸²å£1å‘é€æ•°æ®
 			}
 		}
 
@@ -143,10 +143,10 @@ struct COM{
 		delay_ms(10);
 		if(t==20)
 		{
-			LED0=!LED0;//ÌáÊ¾ÏµÍ³ÕýÔÚÔËÐÐ	
+			LED0=!LED0;//æç¤ºç³»ç»Ÿæ­£åœ¨è¿è¡Œ	
 			t=0;
 			cnt++;
-			LCD_ShowxNum(60+48,170,cnt,3,16,0X80);	//ÏÔÊ¾Êý¾Ý
+			LCD_ShowxNum(60+48,170,cnt,3,16,0X80);	//æ˜¾ç¤ºæ•°æ®
 		}
 	}
 }
